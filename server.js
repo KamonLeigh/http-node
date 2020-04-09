@@ -2,6 +2,7 @@ const http = require('http');
 const https= require('https');
 const fs = require('fs');
 const url = require('url');
+const formidable = require('formidable');
 const textBody = require("body")
 const jsonBody = require("body/json")
 const formBody = require("body/form")
@@ -40,12 +41,7 @@ server.on('request', (req, res) => {
         })
     
     } else {
-        // res.statusCode = 404;
-        // res.setHeader('X-Powered-By', 'Node');
-        res.writeHeader(404, {
-            'X-Powered-By':'Node'
-        })
-        res.end();
+        fs.createReadStream("./index.html").pipe(res)
     }
 
     
