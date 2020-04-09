@@ -1,0 +1,9 @@
+{
+  "name": "http-with-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "body": "^5.1.0"
+  }
+}
