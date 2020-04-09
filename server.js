@@ -22,8 +22,12 @@ server.on('request', (req, res) => {
     if (req.method === 'GET' && parsedUrl.pathname === '/metadata') {
         const { id } = parsedUrl.query;
         const metadata = fetchImageMetadata(id);
+        res.setHeader('Content-Type', 'application/json');
+        res.statusCode = 200;
+        const serialisedJSON = JSON.stringify(metadata);
+        res.write(serialisedJSON);
+        res.end();
 
-        console.log(req.headers);
     } else if (req.method === 'POST' && parsedUrl.pathname ==='/user') {
         jsonBody(req, res, (err, body) => {
 
@@ -36,8 +40,11 @@ server.on('request', (req, res) => {
         })
     
     } else {
-        res.statusCode = 404;
-        res.setHeader('X-Powered-By', 'Node');
+        // res.statusCode = 404;
+        // res.setHeader('X-Powered-By', 'Node');
+        res.writeHeader(404, {
+            'X-Powered-By':'Node'
+        })
         res.end();
     }
 
