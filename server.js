@@ -40,6 +40,23 @@ server.on('request', (req, res) => {
             }
         })
     
+    } else if( req.method === 'POST' && parsedUrl.pathname === '/upload') {
+        
+        
+        const form = new formidable.IncomingForm();
+
+
+        form.parse(req, (err, fields, files) => {
+            console.log('in')
+            console.log('\n fields');
+            console.log(fields);
+            console.log('\n files');
+            console.log(files);
+
+            res.statusCode = 200;
+            res.end('done');
+        });
+
     } else {
         fs.createReadStream("./index.html").pipe(res)
     }
