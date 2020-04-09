@@ -1,6 +1,7 @@
 const http = require('http');
 const https= require('https');
 const fs = require('fs');
+const path = require('path');
 const url = require('url');
 const formidable = require('formidable');
 const textBody = require("body")
@@ -13,7 +14,7 @@ const {fetchImageMetadata, createUser } = require('./services')
 //     key: fs.readFileSync('./key.pem'),
 //     cert: fs.readFileSync('./cert.pem')
 // });
-
+const imgFolder = path.join(__dirname, '/images');
 const server = http.createServer();
 
 server.on('request', (req, res) => {
@@ -43,15 +44,19 @@ server.on('request', (req, res) => {
     } else if( req.method === 'POST' && parsedUrl.pathname === '/upload') {
         
         
-        const form = new formidable.IncomingForm();
+        const form = new formidable.IncomingForm({
+            uploadDir: imgFolder,
+            keepExtensions: true,
+            multiple: true,
+            maxFileSize: 5 * 1024 * 1024
+        });
 
 
         form.parse(req, (err, fields, files) => {
-            console.log('in')
-            console.log('\n fields');
-            console.log(fields);
-            console.log('\n files');
-            console.log(files);
+            if(err) {
+                res.statusCode = 500;
+                res.end('Error');
+            }
 
             res.statusCode = 200;
             res.end('done');
