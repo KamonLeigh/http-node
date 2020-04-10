@@ -52,16 +52,41 @@ server.on('request', (req, res) => {
         });
 
 
-        form.parse(req, (err, fields, files) => {
-            if(err) {
-                res.statusCode = 500;
-                res.end('Error');
-            }
+        // form.parse(req, (err, fields, files) => {
+        //     if(err) {
+        //         res.statusCode = 500;
+        //         res.end('Error');
+        //     }
 
-            res.statusCode = 200;
-            res.end('done');
-        });
+        //     res.statusCode = 200;
+        //     res.end('done');
+        // });
 
+        form.parse(req)
+            .on('fileBegin', (name, file) => {
+                console.log('Our upload has started!');
+            })
+            .on('file', (name, file) => {
+                console.log('Field + file pair has been received');
+            })
+             .on('field', (name, field) => {
+                 console.log('Field received ');
+                 console.log(name, field);
+             })
+             .on('progress', (bytesReceived, bytesExpected) => {
+                console.log(bytesReceived + '/' + bytesExpected);
+             })
+             .on('error', (err) => {
+                 console.error(err);
+                 req.resume();
+             })
+             .on('aborted', () =>  {
+                 console.error('Request aborted by the user')
+             })
+             .on('end', () => {
+                 console.log('Done - request fully received');
+                 res.end('success')
+             })
     } else {
         fs.createReadStream("./index.html").pipe(res)
     }
