@@ -4,10 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 const formidable = require('formidable');
-const textBody = require("body")
 const jsonBody = require("body/json")
-const formBody = require("body/form")
-const anyBody = require("body/any")
 const {fetchImageMetadata, createUser } = require('./services')
 
 // const server = https.createServer({
@@ -36,7 +33,7 @@ server.on('request', (req, res) => {
             if (err) {
                 console.log(err);
             } else {
-
+                console.log(body);
                 createUser(body['username']);
             }
         })
