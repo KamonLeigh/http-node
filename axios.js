@@ -1,12 +1,16 @@
 const axios = require('axios');
 const fs = require('fs');
 
-// axios.get('www.google.com')
-//  .then(res =>{
-//     console.log(res.data);
-//  })
-//  .catch(err => console.error(err));
 
+// Typical way of hiting a end point 
+axios.get('www.google.com')
+ .then(res =>{
+    console.log(res.data);
+ })
+ .catch(err => console.error(err));
+
+
+// Using axios to stream data 
 axios({
     method: 'get',
     url: 'http://www.google.com',
@@ -44,6 +48,8 @@ axios({
 
      // You can use transformResponse 
 
+
+    // Concurrent api calls
      const getMetadata = () => {
          return axios.get('http://localhost:8080/metadata?id=1')
      }
